@@ -5,8 +5,61 @@ import { isAbsolute } from 'path'
 import { URL } from 'url'
 import { FmtString } from './format'
 import { fmtCaption } from './core/helpers/util'
+export interface CustomImageMessage extends tg.Message {
+  type: 'customImageMessage';
+  caption: string;
+  imageUrl: string;
+  timestamp: number;
+}
 
+export interface CustomTextMessage extends tg.Message {
+  type: 'customTextMessage';
+  text: string;
+  timestamp: number;
+}
 export class Telegram extends ApiClient {
+
+  /**
+   * Menangani pesan dengan tipe customImageMessage
+   * @param message pesan yang memiliki tipe customImageMessage
+   */
+  handleCustomImageMessage(message: CustomImageMessage) {
+    console.log('Received custom image message:', message);
+    // Di sini, kamu bisa menambahkan fungsionalitas untuk mengirim foto, misalnya
+  }
+
+  /**
+   * Menangani pesan dengan tipe customTextMessage
+   * @param message pesan yang memiliki tipe customTextMessage
+   */
+  handleCustomTextMessage(message: CustomTextMessage) {
+    console.log('Received custom text message:', message);
+    // Menangani pesan teks dengan melakukan sesuatu, misalnya mengirimkan respons
+  }
+
+  /**
+   * Kirim pesan customImageMessage
+   * @param chatId ID chat tujuan
+   * @param message pesan yang akan dikirim
+   */
+  sendCustomImageMessage(chatId: number, message: CustomImageMessage) {
+    return this.callApi('sendMessage', {
+      chat_id: chatId,
+      text: message.caption, // Mengirimkan caption
+    });
+  }
+
+  /**
+   * Kirim pesan customTextMessage
+   * @param chatId ID chat tujuan
+   * @param message pesan yang akan dikirim
+   */
+  sendCustomTextMessage(chatId: number, message: CustomTextMessage) {
+    return this.callApi('sendMessage', {
+      chat_id: chatId,
+      text: message.text, // Mengirimkan teks
+    });
+  }
   /**
    * Get basic information about the bot
    */
